@@ -1,0 +1,533 @@
+'\"
+'\" Generated from file 'path\&.man' by tcllib/doctools with format 'nroff'
+'\" Copyright (c) 2017 Andreas Kupries
+'\" Copyright (c) 2017 Documentation, Andreas Kupries
+'\"
+.TH "path" n 1\&.1 doc "Path\&. Packages for path (list of string) interning and deduplication\&. Uses Atom\&."
+.\" The -*- nroff -*- definitions below are for supplemental macros used
+.\" in Tcl/Tk manual entries.
+.\"
+.\" .AP type name in/out ?indent?
+.\"	Start paragraph describing an argument to a library procedure.
+.\"	type is type of argument (int, etc.), in/out is either "in", "out",
+.\"	or "in/out" to describe whether procedure reads or modifies arg,
+.\"	and indent is equivalent to second arg of .IP (shouldn't ever be
+.\"	needed;  use .AS below instead)
+.\"
+.\" .AS ?type? ?name?
+.\"	Give maximum sizes of arguments for setting tab stops.  Type and
+.\"	name are examples of largest possible arguments that will be passed
+.\"	to .AP later.  If args are omitted, default tab stops are used.
+.\"
+.\" .BS
+.\"	Start box enclosure.  From here until next .BE, everything will be
+.\"	enclosed in one large box.
+.\"
+.\" .BE
+.\"	End of box enclosure.
+.\"
+.\" .CS
+.\"	Begin code excerpt.
+.\"
+.\" .CE
+.\"	End code excerpt.
+.\"
+.\" .VS ?version? ?br?
+.\"	Begin vertical sidebar, for use in marking newly-changed parts
+.\"	of man pages.  The first argument is ignored and used for recording
+.\"	the version when the .VS was added, so that the sidebars can be
+.\"	found and removed when they reach a certain age.  If another argument
+.\"	is present, then a line break is forced before starting the sidebar.
+.\"
+.\" .VE
+.\"	End of vertical sidebar.
+.\"
+.\" .DS
+.\"	Begin an indented unfilled display.
+.\"
+.\" .DE
+.\"	End of indented unfilled display.
+.\"
+.\" .SO ?manpage?
+.\"	Start of list of standard options for a Tk widget. The manpage
+.\"	argument defines where to look up the standard options; if
+.\"	omitted, defaults to "options". The options follow on successive
+.\"	lines, in three columns separated by tabs.
+.\"
+.\" .SE
+.\"	End of list of standard options for a Tk widget.
+.\"
+.\" .OP cmdName dbName dbClass
+.\"	Start of description of a specific option.  cmdName gives the
+.\"	option's name as specified in the class command, dbName gives
+.\"	the option's name in the option database, and dbClass gives
+.\"	the option's class in the option database.
+.\"
+.\" .UL arg1 arg2
+.\"	Print arg1 underlined, then print arg2 normally.
+.\"
+.\" .QW arg1 ?arg2?
+.\"	Print arg1 in quotes, then arg2 normally (for trailing punctuation).
+.\"
+.\" .PQ arg1 ?arg2?
+.\"	Print an open parenthesis, arg1 in quotes, then arg2 normally
+.\"	(for trailing punctuation) and then a closing parenthesis.
+.\"
+.\"	# Set up traps and other miscellaneous stuff for Tcl/Tk man pages.
+.if t .wh -1.3i ^B
+.nr ^l \n(.l
+.ad b
+.\"	# Start an argument description
+.de AP
+.ie !"\\$4"" .TP \\$4
+.el \{\
+.   ie !"\\$2"" .TP \\n()Cu
+.   el          .TP 15
+.\}
+.ta \\n()Au \\n()Bu
+.ie !"\\$3"" \{\
+\&\\$1 \\fI\\$2\\fP (\\$3)
+.\".b
+.\}
+.el \{\
+.br
+.ie !"\\$2"" \{\
+\&\\$1	\\fI\\$2\\fP
+.\}
+.el \{\
+\&\\fI\\$1\\fP
+.\}
+.\}
+..
+.\"	# define tabbing values for .AP
+.de AS
+.nr )A 10n
+.if !"\\$1"" .nr )A \\w'\\$1'u+3n
+.nr )B \\n()Au+15n
+.\"
+.if !"\\$2"" .nr )B \\w'\\$2'u+\\n()Au+3n
+.nr )C \\n()Bu+\\w'(in/out)'u+2n
+..
+.AS Tcl_Interp Tcl_CreateInterp in/out
+.\"	# BS - start boxed text
+.\"	# ^y = starting y location
+.\"	# ^b = 1
+.de BS
+.br
+.mk ^y
+.nr ^b 1u
+.if n .nf
+.if n .ti 0
+.if n \l'\\n(.lu\(ul'
+.if n .fi
+..
+.\"	# BE - end boxed text (draw box now)
+.de BE
+.nf
+.ti 0
+.mk ^t
+.ie n \l'\\n(^lu\(ul'
+.el \{\
+.\"	Draw four-sided box normally, but don't draw top of
+.\"	box if the box started on an earlier page.
+.ie !\\n(^b-1 \{\
+\h'-1.5n'\L'|\\n(^yu-1v'\l'\\n(^lu+3n\(ul'\L'\\n(^tu+1v-\\n(^yu'\l'|0u-1.5n\(ul'
+.\}
+.el \}\
+\h'-1.5n'\L'|\\n(^yu-1v'\h'\\n(^lu+3n'\L'\\n(^tu+1v-\\n(^yu'\l'|0u-1.5n\(ul'
+.\}
+.\}
+.fi
+.br
+.nr ^b 0
+..
+.\"	# VS - start vertical sidebar
+.\"	# ^Y = starting y location
+.\"	# ^v = 1 (for troff;  for nroff this doesn't matter)
+.de VS
+.if !"\\$2"" .br
+.mk ^Y
+.ie n 'mc \s12\(br\s0
+.el .nr ^v 1u
+..
+.\"	# VE - end of vertical sidebar
+.de VE
+.ie n 'mc
+.el \{\
+.ev 2
+.nf
+.ti 0
+.mk ^t
+\h'|\\n(^lu+3n'\L'|\\n(^Yu-1v\(bv'\v'\\n(^tu+1v-\\n(^Yu'\h'-|\\n(^lu+3n'
+.sp -1
+.fi
+.ev
+.\}
+.nr ^v 0
+..
+.\"	# Special macro to handle page bottom:  finish off current
+.\"	# box/sidebar if in box/sidebar mode, then invoked standard
+.\"	# page bottom macro.
+.de ^B
+.ev 2
+'ti 0
+'nf
+.mk ^t
+.if \\n(^b \{\
+.\"	Draw three-sided box if this is the box's first page,
+.\"	draw two sides but no top otherwise.
+.ie !\\n(^b-1 \h'-1.5n'\L'|\\n(^yu-1v'\l'\\n(^lu+3n\(ul'\L'\\n(^tu+1v-\\n(^yu'\h'|0u'\c
+.el \h'-1.5n'\L'|\\n(^yu-1v'\h'\\n(^lu+3n'\L'\\n(^tu+1v-\\n(^yu'\h'|0u'\c
+.\}
+.if \\n(^v \{\
+.nr ^x \\n(^tu+1v-\\n(^Yu
+\kx\h'-\\nxu'\h'|\\n(^lu+3n'\ky\L'-\\n(^xu'\v'\\n(^xu'\h'|0u'\c
+.\}
+.bp
+'fi
+.ev
+.if \\n(^b \{\
+.mk ^y
+.nr ^b 2
+.\}
+.if \\n(^v \{\
+.mk ^Y
+.\}
+..
+.\"	# DS - begin display
+.de DS
+.RS
+.nf
+.sp
+..
+.\"	# DE - end display
+.de DE
+.fi
+.RE
+.sp
+..
+.\"	# SO - start of list of standard options
+.de SO
+'ie '\\$1'' .ds So \\fBoptions\\fR
+'el .ds So \\fB\\$1\\fR
+.SH "STANDARD OPTIONS"
+.LP
+.nf
+.ta 5.5c 11c
+.ft B
+..
+.\"	# SE - end of list of standard options
+.de SE
+.fi
+.ft R
+.LP
+See the \\*(So manual entry for details on the standard options.
+..
+.\"	# OP - start of full description for a single option
+.de OP
+.LP
+.nf
+.ta 4c
+Command-Line Name:	\\fB\\$1\\fR
+Database Name:	\\fB\\$2\\fR
+Database Class:	\\fB\\$3\\fR
+.fi
+.IP
+..
+.\"	# CS - begin code excerpt
+.de CS
+.RS
+.nf
+.ta .25i .5i .75i 1i
+..
+.\"	# CE - end code excerpt
+.de CE
+.fi
+.RE
+..
+.\"	# UL - underline word
+.de UL
+\\$1\l'|0\(ul'\\$2
+..
+.\"	# QW - apply quotation marks to word
+.de QW
+.ie '\\*(lq'"' ``\\$1''\\$2
+.\"" fix emacs highlighting
+.el \\*(lq\\$1\\*(rq\\$2
+..
+.\"	# PQ - apply parens and quotation marks to word
+.de PQ
+.ie '\\*(lq'"' (``\\$1''\\$2)\\$3
+.\"" fix emacs highlighting
+.el (\\*(lq\\$1\\*(rq\\$2)\\$3
+..
+.\"	# QR - quoted range
+.de QR
+.ie '\\*(lq'"' ``\\$1''\\-``\\$2''\\$3
+.\"" fix emacs highlighting
+.el \\*(lq\\$1\\*(rq\\-\\*(lq\\$2\\*(rq\\$3
+..
+.\"	# MT - "empty" string
+.de MT
+.QW ""
+..
+.BS
+.SH NAME
+path \- Path - Base class, common API
+.SH SYNOPSIS
+package require \fBcmdr \fR
+.sp
+\fB<instance>\fR \fBEncode\fR \fIparent\fR \fIsegment\fR
+.sp
+\fB<instance>\fR \fBDecode\fR \fIid\fR
+.sp
+\fB<instance>\fR \fBnames\fR
+.sp
+\fB<instance>\fR \fBHas\fR \fIparent\fR \fIsegment\fR \fIidvar\fR
+.sp
+\fB<instance>\fR \fBexists-id\fR \fIid\fR
+.sp
+\fB<instance>\fR \fBsize\fR
+.sp
+\fB<instance>\fR \fBMap\fR \fIpath\fR \fIparent\fR \fIsegment\fR \fIid\fR
+.sp
+\fB<instance>\fR \fBclear\fR
+.sp
+\fB<instance>\fR \fBid\fR \fIpath\fR
+.sp
+\fB<instance>\fR \fBid*\fR \fI\&.\&.\&.\fR
+.sp
+\fB<instance>\fR \fBid-from\fR \fIbase\fR \fIpath\fR
+.sp
+\fB<instance>\fR \fBid-from*\fR \fIbase\fR \fI\&.\&.\&.\fR
+.sp
+\fB<instance>\fR \fBexists\fR \fIpath\fR
+.sp
+\fB<instance>\fR \fBexists*\fR \fI\&.\&.\&.\fR
+.sp
+\fB<instance>\fR \fBexists-from\fR \fIbase\fR \fIpath\fR
+.sp
+\fB<instance>\fR \fBexists-from*\fR \fIbase\fR \fI\&.\&.\&.\fR
+.sp
+\fB<instance>\fR \fBpath\fR \fIid\fR
+.sp
+\fB<instance>\fR \fBmap\fR \fIpath\fR \fIid\fR
+.sp
+\fB<instance>\fR \fBserialize\fR
+.sp
+\fB<instance>\fR \fBdeserialize\fR \fIserialization\fR
+.sp
+\fB<instance>\fR \fBload\fR \fIserialization\fR
+.sp
+\fB<instance>\fR \fBmerge\fR \fIserialization\fR
+.sp
+.BE
+.SH DESCRIPTION
+.PP
+Welcome to the Path project, written by Andreas Kupries\&.
+.PP
+For availability please read \fIPath - How To Get The Sources\fR\&.
+.PP
+While this package, from its name, looks like the public entrypoint of
+the system, it is \fInot\fR\&. This package is internal, providing the
+base class for all the others implementing actual storage backends\&.
+.PP
+The following sections are of interest only to developers
+intending to extend or modify the system, then\&. Everybody else can
+skip this document\&.
+.SH "API TO IMPLEMENT"
+This sections lists and describes all the methods a derived class
+\fIhas\fR to override to be a proper and functional path storage:
+.TP
+\fB<instance>\fR \fBEncode\fR \fIparent\fR \fIsegment\fR
+This method's implementation has to add the path specified by the path
+id of its \fIparent\fR and the atom id of its \fIsegment\fR name to
+the instance, and return its unique numeric identifier as the result
+of the method\&.
+.sp
+Multiple calls of this method for the same combination of
+parent and segment have to return the same identifier\&.
+.TP
+\fB<instance>\fR \fBDecode\fR \fIid\fR
+This method's implementation has to map the specified numeric path
+\fIid\fR back to its combination of parent and segment
+(see \fBEncode\fR above), and return that pair as the result of the
+method\&.
+.sp
+An error must be thrown if the \fIid\fR is not known to the
+instance\&.
+.TP
+\fB<instance>\fR \fBnames\fR
+This method's implementation has to return a list of all paths which
+have been interned into the instance\&. No specific order is guaranteed\&.
+.sp
+\fIBeware\fR, this is an expensive operation as it has to
+decode the internal representation for \fIall\fR interned paths
+back to their representation as lists of strings\&.
+.TP
+\fB<instance>\fR \fBHas\fR \fIparent\fR \fIsegment\fR \fIidvar\fR
+This method's implementation has to test if the path specified by its
+combination of parent and segment ids has been interned into the
+instance and return a boolean flag as the result of the method\&.
+.sp
+The result has to be \fBtrue\fR if the path is known, and
+\fBfalse\fR otherwise\&.
+.sp
+Furthermore, if the path does exist then its numeric id is
+stored into the variable named by \fIidvar\fR\&.
+.TP
+\fB<instance>\fR \fBexists-id\fR \fIid\fR
+This method's implementation has to test if the specified numeric path
+\fIid\fR is known to the instance and return a boolean flag as the
+result of the method\&.
+.sp
+The result has to be \fBtrue\fR if the id is known, and
+\fBfalse\fR otherwise\&.
+.TP
+\fB<instance>\fR \fBsize\fR
+This method's implementation has to return the number of interned
+paths known to the instance\&.
+.TP
+\fB<instance>\fR \fBMap\fR \fIpath\fR \fIparent\fR \fIsegment\fR \fIid\fR
+This method's implementation has to add the specified \fIpath\fR to
+the instance and force an association with the specified numeric path
+\fIid\fR\&. The \fIpath\fR argument is only used for error messages\&.
+The actual representation is that of a combination of parent and
+segment id, is done for \fBEncode\fR, of which this method is a
+variant of\&.
+.sp
+The result of the method has to be the empty string\&.
+.sp
+An error has to be thrown if the \fIid\fR is already used for a
+different path\&.
+.TP
+\fB<instance>\fR \fBclear\fR
+This method's implementation has to drop all path/id mappings from the
+instance\&.  After this method has run the instance must be empty\&.
+.sp
+The result of this method must be the empty string\&.
+.PP
+.SH "API HOOKS"
+This sections lists the base class methods a derived class \fImay\fR
+override\&. While they have implementations in the base these are
+generic and may not be as efficient as possible for the derived class
+and its full access to its own datastructures\&.
+.TP
+\fB<instance>\fR \fBid\fR \fIpath\fR
+.TP
+\fB<instance>\fR \fBid*\fR \fI\&.\&.\&.\fR
+.TP
+\fB<instance>\fR \fBid-from\fR \fIbase\fR \fIpath\fR
+.TP
+\fB<instance>\fR \fBid-from*\fR \fIbase\fR \fI\&.\&.\&.\fR
+These methods have to intern a path and return its unique numeric id\&.
+The methods with names ending \fI*\fR take the segments of the path
+as separate arguments, while the other methods take them as a list\&.
+The methods with \fI-from\fR in the name take the path id of a
+known \fIbase\fR path, and intern the actual path relative to the
+base, i\&.e\&. as a child of the base\&.
+.sp
+If the id of the base path is not known an error has to be
+thrown\&.
+.sp
+The standard implementations use \fBEncode\fR (see previous
+section) to incrementally intern the path\&.
+.TP
+\fB<instance>\fR \fBexists\fR \fIpath\fR
+.TP
+\fB<instance>\fR \fBexists*\fR \fI\&.\&.\&.\fR
+.TP
+\fB<instance>\fR \fBexists-from\fR \fIbase\fR \fIpath\fR
+.TP
+\fB<instance>\fR \fBexists-from*\fR \fIbase\fR \fI\&.\&.\&.\fR
+These methods have to test if a path is interned and return a boolean
+flag indicating the result of the test\&. \fBtrue\fR if the path
+exists, and \fBfalse\fR otherwise\&.
+The methods with names ending \fI*\fR take the segments of the path
+to check as separate arguments, while the other methods take them as a
+list\&.
+The methods with \fI-from\fR in the name take the path id of a
+known \fIbase\fR path, and check the actual path relative to the base,
+i\&.e\&. as a child of the base\&.
+.sp
+If the id of the base path is not known an error has to be
+thrown\&.
+.sp
+The standard implementations use \fBHas\fR (see previous
+section) to incrementally check the path\&.
+.TP
+\fB<instance>\fR \fBpath\fR \fIid\fR
+This method's implementation has to map the specified path \fIid\fR
+back to the path it was generated from during interning, and return
+that path as its result\&.
+.sp
+The standard implementation uses \fBDecode\fR (see previous
+section) to incrementally regain the path\&.
+.TP
+\fB<instance>\fR \fBmap\fR \fIpath\fR \fIid\fR
+This method's implementation has to intern the specified \fIpath\fR
+and force it to map to the given \fIid\fR\&.
+.sp
+The standard implementation recodes the path into the internal
+combination of parent and segment ids and then uses \fBMap\fR (see
+previous section) to save the forced mapping\&.
+.sp
+The result of the method has to be \fIid\fR\&.
+.TP
+\fB<instance>\fR \fBserialize\fR
+This method's implementation has to serialize the content of the
+instance, i\&.e\&. the path-to-id map and return it as the result of the
+method\&.
+.sp
+The result has to be an ordered Tcl dictionary with the paths
+as keys and the associated identifiers as the values\&. The paths are
+however not represented by their full list of strings, but as a pair
+of parent path id and segment name\&. This form retains the internal
+compression done by the store\&. The ordering comes in because the
+command has to list parent paths before their children\&. This is
+necessary for \fBdeserialize\fR and \fBmerge\fR to work
+correctly\&.
+.TP
+\fB<instance>\fR \fBdeserialize\fR \fIserialization\fR
+This method's implementation has to take a \fIserialization\fR as
+generated by method \fBserialize\fR and add it to the instance\&.
+It has to use the semantics of method \fBmap\fR for this, to
+preserve the exact path/id mapping found in the input\&. On the
+flip-side this means that existing mappings may interfere, in that
+case an error has to be thrown\&.
+.sp
+The result of the method has to be the empty string\&.
+.TP
+\fB<instance>\fR \fBload\fR \fIserialization\fR
+This method's implementation has to take a \fIserialization\fR as
+generated by method \fBserialize\fR and have it replace the
+previous content of the instance\&.
+.sp
+The result of the method has to be the empty string\&.
+.TP
+\fB<instance>\fR \fBmerge\fR \fIserialization\fR
+This method's implementation has to take a \fIserialization\fR as
+generated by method \fBserialize\fR and add the strings it
+contains to the instance, per the semantics of method \fBid\fR\&.
+.sp
+The ids found in the \fIserialization\fR do not matter and have
+to be ignored\&.
+.sp
+The result of the method has to be the empty string\&.
+.PP
+.SH "BUGS, IDEAS, FEEDBACK"
+Both the package(s) and this documentation will undoubtedly contain
+bugs and other problems\&.
+Please report such at
+\fIPath Tickets\fR [https:/core\&.tcl\&.tk/akupries/path]\&.
+.PP
+Please also report any ideas you may have for enhancements of
+either package(s) and/or documentation\&.
+.SH KEYWORDS
+deduplication, hierarchical, interning, list(string) deduplication, list(string) interning, list(string) storage, path deduplication, path interning, path storage, storage, tree
+.SH COPYRIGHT
+.nf
+Copyright (c) 2017 Andreas Kupries
+Copyright (c) 2017 Documentation, Andreas Kupries
+
+.fi

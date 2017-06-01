@@ -1,0 +1,240 @@
+[comment {-*- tcl -*- doctools manpage}]
+[include parts/definitions.inc]
+[vset VERSION 1.1]
+[manpage_begin [vset LABEL_BASE] [vset MAN_SECTION] [vset VERSION]]
+[include parts/module.inc]
+[require cmdr]
+[titledesc [vset TITLE_BASE]]
+[description]
+[include parts/welcome.inc]
+
+While this package, from its name, looks like the public entrypoint of
+the system, it is [emph not]. This package is internal, providing the
+base class for all the others implementing actual storage backends.
+
+[para] The following sections are of interest only to developers
+intending to extend or modify the system, then. Everybody else can
+skip this document.
+
+[section {API to implement}]
+
+This sections lists and describes all the methods a derived class
+[emph has] to override to be a proper and functional path storage:
+
+[list_begin definitions]
+[comment {- - -- --- ----- -------- -------------}]
+[call [cmd <instance>] [method Encode] [arg parent] [arg segment]]
+
+This method's implementation has to add the path specified by the path
+id of its [arg parent] and the atom id of its [arg segment] name to
+the instance, and return its unique numeric identifier as the result
+of the method.
+
+[para] Multiple calls of this method for the same combination of
+parent and segment have to return the same identifier.
+
+[comment {- - -- --- ----- -------- -------------}]
+[call [cmd <instance>] [method Decode] [arg id]]
+
+This method's implementation has to map the specified numeric path
+[arg id] back to its combination of parent and segment
+(see [method Encode] above), and return that pair as the result of the
+method.
+
+[para] An error must be thrown if the [arg id] is not known to the
+instance.
+
+[comment {- - -- --- ----- -------- -------------}]
+[call [cmd <instance>] [method names]]
+
+This method's implementation has to return a list of all paths which
+have been interned into the instance. No specific order is guaranteed.
+
+[para] [strong Beware], this is an expensive operation as it has to
+decode the internal representation for [strong all] interned paths
+back to their representation as lists of strings.
+
+[comment {- - -- --- ----- -------- -------------}]
+[call [cmd <instance>] [method Has] [arg parent] [arg segment] [arg idvar]]
+
+This method's implementation has to test if the path specified by its
+combination of parent and segment ids has been interned into the
+instance and return a boolean flag as the result of the method.
+
+[para] The result has to be [const true] if the path is known, and
+[const false] otherwise.
+
+[para] Furthermore, if the path does exist then its numeric id is
+stored into the variable named by [arg idvar].
+
+[comment {- - -- --- ----- -------- -------------}]
+[call [cmd <instance>] [method exists-id] [arg id]]
+
+This method's implementation has to test if the specified numeric path
+[arg id] is known to the instance and return a boolean flag as the
+result of the method.
+
+[para] The result has to be [const true] if the id is known, and
+[const false] otherwise.
+
+[comment {- - -- --- ----- -------- -------------}]
+[call [cmd <instance>] [method size]]
+
+This method's implementation has to return the number of interned
+paths known to the instance.
+
+[comment {- - -- --- ----- -------- -------------}]
+[call [cmd <instance>] [method Map] [arg path] [arg parent] [arg segment] [arg id]]
+
+This method's implementation has to add the specified [arg path] to
+the instance and force an association with the specified numeric path
+[arg id]. The [arg path] argument is only used for error messages.
+The actual representation is that of a combination of parent and
+segment id, is done for [method Encode], of which this method is a
+variant of.
+
+[para] The result of the method has to be the empty string.
+
+[para] An error has to be thrown if the [arg id] is already used for a
+different path.
+
+[comment {- - -- --- ----- -------- -------------}]
+[call [cmd <instance>] [method clear]]
+
+This method's implementation has to drop all path/id mappings from the
+instance.  After this method has run the instance must be empty.
+
+[para] The result of this method must be the empty string.
+
+[list_end]
+
+[section {API hooks}]
+
+This sections lists the base class methods a derived class [emph may]
+override. While they have implementations in the base these are
+generic and may not be as efficient as possible for the derived class
+and its full access to its own datastructures.
+
+[list_begin definitions]
+
+[comment {- - -- --- ----- -------- -------------}]
+[call [cmd <instance>] [method id] [arg path]]
+[call [cmd <instance>] [method id*] [arg ...]]
+[call [cmd <instance>] [method id-from] [arg base] [arg path]]
+[call [cmd <instance>] [method id-from*] [arg base] [arg ...]]
+
+These methods have to intern a path and return its unique numeric id.
+
+The methods with names ending [strong *] take the segments of the path
+as separate arguments, while the other methods take them as a list.
+
+The methods with [strong -from] in the name take the path id of a
+known [arg base] path, and intern the actual path relative to the
+base, i.e. as a child of the base.
+
+[para] If the id of the base path is not known an error has to be
+thrown.
+
+[para] The standard implementations use [method Encode] (see previous
+section) to incrementally intern the path.
+
+[comment {- - -- --- ----- -------- -------------}]
+[call [cmd <instance>] [method exists] [arg path]]
+[call [cmd <instance>] [method exists*] [arg ...]]
+[call [cmd <instance>] [method exists-from] [arg base] [arg path]]
+[call [cmd <instance>] [method exists-from*] [arg base] [arg ...]]
+
+These methods have to test if a path is interned and return a boolean
+flag indicating the result of the test. [const true] if the path
+exists, and [const false] otherwise.
+
+The methods with names ending [strong *] take the segments of the path
+to check as separate arguments, while the other methods take them as a
+list.
+
+The methods with [strong -from] in the name take the path id of a
+known [arg base] path, and check the actual path relative to the base,
+i.e. as a child of the base.
+
+[para] If the id of the base path is not known an error has to be
+thrown.
+
+[para] The standard implementations use [method Has] (see previous
+section) to incrementally check the path.
+
+[comment {- - -- --- ----- -------- -------------}]
+[call [cmd <instance>] [method path] [arg id]]
+
+This method's implementation has to map the specified path [arg id]
+back to the path it was generated from during interning, and return
+that path as its result.
+
+[para] The standard implementation uses [method Decode] (see previous
+section) to incrementally regain the path.
+
+
+[comment {- - -- --- ----- -------- -------------}]
+[call [cmd <instance>] [method map] [arg path] [arg id]]
+
+This method's implementation has to intern the specified [arg path]
+and force it to map to the given [arg id].
+
+[para] The standard implementation recodes the path into the internal
+combination of parent and segment ids and then uses [method Map] (see
+previous section) to save the forced mapping.
+
+[para] The result of the method has to be [arg id].
+
+[comment {- - -- --- ----- -------- -------------}]
+[call [cmd <instance>] [method serialize]]
+
+This method's implementation has to serialize the content of the
+instance, i.e. the path-to-id map and return it as the result of the
+method.
+
+[para] The result has to be an ordered Tcl dictionary with the paths
+as keys and the associated identifiers as the values. The paths are
+however not represented by their full list of strings, but as a pair
+of parent path id and segment name. This form retains the internal
+compression done by the store. The ordering comes in because the
+command has to list parent paths before their children. This is
+necessary for [method deserialize] and [method merge] to work
+correctly.
+
+[comment {- - -- --- ----- -------- -------------}]
+[call [cmd <instance>] [method deserialize] [arg serialization]]
+
+This method's implementation has to take a [arg serialization] as
+generated by method [method serialize] and add it to the instance.
+
+It has to use the semantics of method [method map] for this, to
+preserve the exact path/id mapping found in the input. On the
+flip-side this means that existing mappings may interfere, in that
+case an error has to be thrown.
+
+[para] The result of the method has to be the empty string.
+
+[comment {- - -- --- ----- -------- -------------}]
+[call [cmd <instance>] [method load] [arg serialization]]
+
+This method's implementation has to take a [arg serialization] as
+generated by method [method serialize] and have it replace the
+previous content of the instance.
+
+[para] The result of the method has to be the empty string.
+
+[comment {- - -- --- ----- -------- -------------}]
+[call [cmd <instance>] [method merge] [arg serialization]]
+
+This method's implementation has to take a [arg serialization] as
+generated by method [method serialize] and add the strings it
+contains to the instance, per the semantics of method [method id].
+
+[para] The ids found in the [arg serialization] do not matter and have
+to be ignored.
+
+[para] The result of the method has to be the empty string.
+
+[list_end]
+[include parts/feedback.inc]
+[manpage_end]

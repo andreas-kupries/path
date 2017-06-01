@@ -1,0 +1,33 @@
+# -*- tcl -*- tcl.tk//DSL tcltest//EN//2.0 tcl.tk//DSL tcltest//EN//2.0
+## (c) 2017 Andreas Kupries
+# # ## ### ##### ######## ############# #####################
+## Tests for the atom::cache package, sqlite backend, in memory
+
+kt check Tcl     8.5
+kt check tcltest 2
+
+kt require support TclOO
+kt require support sqlite3
+kt require support dbutil
+kt require support atom::sqlite
+kt require support atom::memory
+
+kt local   support path
+kt local   support path::sqlite
+kt local   testing path::cache
+
+# # ## ### ##### ######## ############# #####################
+
+proc test-class {} { return path::cache/sqlite/memory }
+
+# # ## ### ##### ######## ############# #####################
+
+kt source support/common.tcl
+kt source support/id-sequence-sqlite.tcl
+kt source support/setup-cache-sqlite-memory.tcl
+
+kt source parts/cache.testsuite
+kt source parts/base.testsuite
+
+# # ## ### ##### ######## ############# #####################
+cleanupTests

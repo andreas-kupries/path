@@ -1,0 +1,29 @@
+# -*- tcl -*- tcl.tk//DSL tcltest//EN//2.0 tcl.tk//DSL tcltest//EN//2.0
+## (c) 2017 Andreas Kupries
+# # ## ### ##### ######## ############# #####################
+## Tests for the path::memory package.
+
+kt check Tcl     8.5
+kt check tcltest 2
+
+kt require support TclOO
+kt require support atom::memory
+
+kt local   support path
+kt local   testing path::memory
+
+# # ## ### ##### ######## ############# #####################
+
+proc test-class {} { return path::memory }
+
+# # ## ### ##### ######## ############# #####################
+
+kt source support/common.tcl
+kt source support/id-sequence-memory.tcl
+kt source support/setup-memory.tcl
+
+kt source parts/memory.testsuite
+kt source parts/base.testsuite
+
+# # ## ### ##### ######## ############# #####################
+cleanupTests

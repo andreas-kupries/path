@@ -1,0 +1,5 @@
+path::cache <----------------\
+            <                 \
+             \- path::memory <-X- path
+                              /
+path::sqlite <---------------/

@@ -1,0 +1,166 @@
+## -*- tcl -*-
+## (c) 2017 Andreas Kupries
+# # ## ### ##### ######## ############# #####################
+## Test suite for cache stores, custom parts.
+#
+## The external procedures 'already' and 'badmethod' are used to
+## generate implementation specific error messages. Implementations
+## have to be provided by the invoking implementation-specific
+## testsuite.
+#
+## The external procedures 'new-store' and 'release-store' are used to
+## create and destroy aqn instance of the store under test.
+
+# # ## ### ##### ######## ############# #####################
+
+test [test-class]-1.0 {new, wrong#args, not enough} -body {
+    path::cache new
+} -returnCodes error -result {wrong # args: should be "path::cache new backend"}
+
+test [test-class]-1.1 {new, wrong#args, too many} -body {
+    path::cache new B X
+} -returnCodes error -result {wrong # args: should be "path::cache new backend"}
+
+test [test-class]-1.2 {create, wrong#args, not enough} -body {
+    path::cache create foo
+} -returnCodes error -result {wrong # args: should be "path::cache create foo backend"}
+
+test [test-class]-1.3 {create, wrong#args, too many} -body {
+    path::cache create foo B X
+} -returnCodes error -result {wrong # args: should be "path::cache create foo backend"}
+
+test [test-class]-1.4 {constructor, create, existing command} -setup {
+    atom::memory create XM
+    path::memory create X XM
+    path::cache create test-cache-store X
+} -body {
+    path::cache create test-cache-store X
+} -cleanup {
+    test-cache-store destroy
+    X destroy
+    XM destroy
+} -returnCodes error -result [already test-cache-store]
+
+test [test-class]-1.5 {constructor, create, existing command} -setup {
+    atom::memory create XM
+    path::memory create X XM
+} -body {
+    path::cache create set X
+} -cleanup {
+    X destroy
+    XM destroy
+} -returnCodes error -result [already set]
+
+test [test-class]-1.6 {constructor, create} -setup {
+    set result {}
+    atom::memory create test-atom
+    path::memory create test-cache-backend test-atom
+} -body {
+    lappend result [path::cache create test-cache-store test-cache-backend]
+    lappend result [info commands ::test-cache-store]
+    lappend result [test-cache-store size]
+} -cleanup {
+    test-cache-store destroy
+    test-cache-backend destroy
+    test-atom destroy
+    unset result
+} -result {::test-cache-store ::test-cache-store 0}
+
+test [test-class]-1.7 {constructor, new} -setup {
+    set result {}
+    atom::memory create test-atom
+    path::memory create test-cache-backend test-atom
+} -body {
+    lappend result [set foo [path::cache new test-cache-backend]]
+    lappend result [info commands ::$foo]
+    lappend result [$foo size]
+} -cleanup {
+    $foo destroy
+    test-cache-backend destroy
+    test-atom destroy
+    unset result foo
+} -match glob -result {::oo::Obj* ::oo::Obj* 0}
+
+# # ## ### ##### ######## ############# #####################
+
+test [test-class]-1.8 {exists, authoritative backend} -setup {
+    new-store
+    STD_FILL test-backend
+    # cache doesn't know this.
+} -body {
+    test-store exists S
+} -cleanup {
+    release-store
+} -result 1
+
+test [test-class]-1.9 {names, authoritative backend} -setup {
+    new-store
+    STD_FILL test-backend
+    # cache doesn't know this.
+} -body {
+    lsort -dict [test-store names]
+} -cleanup {
+    release-store
+} -result {S {S A} {S A B} {S A B C} {S A R} {S A R C} {S A R D}}
+
+test [test-class]-1.10 {serialize, authoritative backend} -setup {
+    new-store
+    STD_FILL test-backend
+    # cache doesn't know this.
+} -body {
+    kt dictsort [v_p_s [test-store serialize]]
+} -cleanup {
+    release-store
+} -result [kt dictsort [STD_SERIAL]]
+
+test [test-class]-1.11 {size, authoritative backend} -setup {
+    new-store
+    STD_FILL test-backend
+    # cache doesn't know this.
+} -body {
+    test-store size
+} -cleanup {
+    release-store
+} -result 7
+
+test [test-class]-1.12 {path, authoritative backend} -setup {
+    new-store
+    STD_FILL test-backend
+    # cache doesn't know this.
+} -body {
+    test-store path [nth 2]
+} -cleanup {
+    release-store
+} -result {S A}
+
+# deserialize, load, merge
+
+test [test-class]-2.0 {deserialize visible in backend} -setup {
+    new-store
+    test-store deserialize [STD_SERIAL]
+} -body {
+    kt dictsort [v_p_s [test-backend serialize]]
+} -cleanup {
+    release-store
+} -result [kt dictsort [STD_SERIAL]]
+
+test [test-class]-2.1 {load visible in backend} -setup {
+    new-store
+    test-store load [STD_SERIAL]
+} -body {
+    kt dictsort [v_p_s [test-backend serialize]]
+} -cleanup {
+    release-store
+} -result [kt dictsort [STD_SERIAL]]
+
+test [test-class]-2.3 {merge visible in backend} -setup {
+    new-store
+    test-store merge [STD_SERIAL]
+} -body {
+    kt dictsort [v_p_s [test-backend serialize]]
+} -cleanup {
+    release-store
+} -result [kt dictsort [STD_SERIAL]]
+
+# # ## ### ##### ######## ############# #####################
+return

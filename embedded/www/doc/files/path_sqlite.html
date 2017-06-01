@@ -1,0 +1,278 @@
+
+<html><head>
+<title>path::sqlite - Path. Packages for path (list of string) interning and deduplication. Uses Atom.</title>
+<style type="text/css"><!--
+    HTML {
+	background: 	#FFFFFF;
+	color: 		black;
+    }
+    BODY {
+	background: 	#FFFFFF;
+	color:	 	black;
+    }
+    DIV.doctools {
+	margin-left:	10%;
+	margin-right:	10%;
+    }
+    DIV.doctools H1,DIV.doctools H2 {
+	margin-left:	-5%;
+    }
+    H1, H2, H3, H4 {
+	margin-top: 	1em;
+	font-family:	sans-serif;
+	font-size:	large;
+	color:		#005A9C;
+	background: 	transparent;
+	text-align:		left;
+    }
+    H1.title {
+	text-align: center;
+    }
+    UL,OL {
+	margin-right: 0em;
+	margin-top: 3pt;
+	margin-bottom: 3pt;
+    }
+    UL LI {
+	list-style: disc;
+    }
+    OL LI {
+	list-style: decimal;
+    }
+    DT {
+	padding-top: 	1ex;
+    }
+    UL.toc,UL.toc UL, UL.toc UL UL {
+	font:		normal 12pt/14pt sans-serif;
+	list-style:	none;
+    }
+    LI.section, LI.subsection {
+	list-style: 	none;
+	margin-left: 	0em;
+	text-indent:	0em;
+	padding: 	0em;
+    }
+    PRE {
+	display: 	block;
+	font-family:	monospace;
+	white-space:	pre;
+	margin:		0%;
+	padding-top:	0.5ex;
+	padding-bottom:	0.5ex;
+	padding-left:	1ex;
+	padding-right:	1ex;
+	width:		100%;
+    }
+    PRE.example {
+	color: 		black;
+	background: 	#f5dcb3;
+	border:		1px solid black;
+    }
+    UL.requirements LI, UL.syntax LI {
+	list-style: 	none;
+	margin-left: 	0em;
+	text-indent:	0em;
+	padding:	0em;
+    }
+    DIV.synopsis {
+	color: 		black;
+	background: 	#80ffff;
+	border:		1px solid black;
+	font-family:	serif;
+	margin-top: 	1em;
+	margin-bottom: 	1em;
+    }
+    UL.syntax {
+	margin-top: 	1em;
+	border-top:	1px solid black;
+    }
+    UL.requirements {
+	margin-bottom: 	1em;
+	border-bottom:	1px solid black;
+    }
+--></style>
+</head>
+<! -- Generated from file 'path_sqlite.man' by tcllib/doctools with format 'html'
+   -->
+<! -- Copyright &copy; 2017 Andreas Kupries   -- Copyright &copy; 2017 Documentation, Andreas Kupries
+   -->
+<! -- CVS: $Id$ path::sqlite.n
+   -->
+<body><div class="doctools">
+<hr> [
+   <a href="../../../../../../home">Home</a>
+| <a href="../../toc.html">Main Table Of Contents</a>
+| <a href="../toc.html">Table Of Contents</a>
+| <a href="../../index.html">Keyword Index</a>
+ ] <hr>
+<h1 class="title">path::sqlite(n) 1 doc &quot;Path. Packages for path (list of string) interning and deduplication. Uses Atom.&quot;</h1>
+<div id="name" class="section"><h2><a name="name">Name</a></h2>
+<p>path::sqlite - Path - Sqlite storage backend</p>
+</div>
+<div id="toc" class="section"><h2><a name="toc">Table Of Contents</a></h2>
+<ul class="toc">
+<li class="section"><a href="#toc">Table Of Contents</a></li>
+<li class="section"><a href="#synopsis">Synopsis</a></li>
+<li class="section"><a href="#section1">Description</a></li>
+<li class="section"><a href="#section2">Class API</a></li>
+<li class="section"><a href="#section3">Standard API</a></li>
+<li class="section"><a href="#section4">Bugs, Ideas, Feedback</a></li>
+<li class="section"><a href="#keywords">Keywords</a></li>
+<li class="section"><a href="#copyright">Copyright</a></li>
+</ul>
+</div>
+<div id="synopsis" class="section"><h2><a name="synopsis">Synopsis</a></h2>
+<div class="synopsis">
+<ul class="requirements">
+<li>package require <b class="pkgname">Tclx</b></li>
+<li>package require <b class="pkgname">path::sqlite</b></li>
+</ul>
+<ul class="syntax">
+<li><a href="#1"><b class="cmd">::path::sqlite</b> <b class="method">create</b> <i class="arg">obj</i> <i class="arg">db</i> <i class="arg">table</i></a></li>
+<li><a href="#2"><b class="cmd">::path::sqlite</b> <b class="method">new</b> <i class="arg">db</i> <i class="arg">table</i></a></li>
+<li><a href="#3"><b class="cmd">&lt;instance&gt;</b> <b class="method">id</b> <i class="arg">path</i></a></li>
+<li><a href="#4"><b class="cmd">&lt;instance&gt;</b> <b class="method">str</b> <i class="arg">id</i></a></li>
+<li><a href="#5"><b class="cmd">&lt;instance&gt;</b> <b class="method">names</b></a></li>
+<li><a href="#6"><b class="cmd">&lt;instance&gt;</b> <b class="method">exists</b> <i class="arg">path</i></a></li>
+<li><a href="#7"><b class="cmd">&lt;instance&gt;</b> <b class="method">exists-id</b> <i class="arg">id</i></a></li>
+<li><a href="#8"><b class="cmd">&lt;instance&gt;</b> <b class="method">size</b></a></li>
+<li><a href="#9"><b class="cmd">&lt;instance&gt;</b> <b class="method">map</b> <i class="arg">path</i> <i class="arg">id</i></a></li>
+<li><a href="#10"><b class="cmd">&lt;instance&gt;</b> <b class="method">clear</b></a></li>
+<li><a href="#11"><b class="cmd">&lt;instance&gt;</b> <b class="method">serialize</b></a></li>
+<li><a href="#12"><b class="cmd">&lt;instance&gt;</b> <b class="method">--&gt;</b></a></li>
+<li><a href="#13"><b class="cmd">&lt;instance&gt;</b> <b class="method">deserialize</b> <i class="arg">serialization</i></a></li>
+<li><a href="#14"><b class="cmd">&lt;instance&gt;</b> <b class="method">&lt;--</b> <i class="arg">serialization</i></a></li>
+<li><a href="#15"><b class="cmd">&lt;instance&gt;</b> <b class="method">load</b> <i class="arg">serialization</i></a></li>
+<li><a href="#16"><b class="cmd">&lt;instance&gt;</b> <b class="method">:=</b> <i class="arg">serialization</i></a></li>
+<li><a href="#17"><b class="cmd">&lt;instance&gt;</b> <b class="method">merge</b> <i class="arg">serialization</i></a></li>
+<li><a href="#18"><b class="cmd">&lt;instance&gt;</b> <b class="method">+=</b> <i class="arg">serialization</i></a></li>
+</ul>
+</div>
+</div>
+<div id="section1" class="section"><h2><a name="section1">Description</a></h2>
+<p>Welcome to the Path project, written by Andreas Kupries.</p>
+<p>For availability please read <i class="term"><a href="path_howto_get_sources.html">Path - How To Get The Sources</a></i>.</p>
+<p>This package provides storages for string interning which use a table
+in an sqlite database to hold their data.</p>
+<p>Note and remember that sqlite databases may exist only in
+memory and not just with a backing file as usual. This is another way
+of getting an in-memory string storage.</p>
+</div>
+<div id="section2" class="section"><h2><a name="section2">Class API</a></h2>
+<dl class="definitions">
+<dt><a name="1"><b class="cmd">::path::sqlite</b> <b class="method">create</b> <i class="arg">obj</i> <i class="arg">db</i> <i class="arg">table</i></a></dt>
+<dd><p>This constructor command creates a new instance <i class="arg">obj</i>
+of the class and returns the fully qualified name of that
+instance.</p>
+<p>The named <i class="arg">table</i> in the sqlite database identified by its
+object command <i class="arg">database</i> is used to hold the mapping.
+The table will be created if it does not exist.  If it exists its
+schema will be verified instead and an error thrown if the schema is
+not as expected.</p></dd>
+<dt><a name="2"><b class="cmd">::path::sqlite</b> <b class="method">new</b> <i class="arg">db</i> <i class="arg">table</i></a></dt>
+<dd><p>This constructor command creates a new instance of the class and
+returns the fully qualified name of that instance.</p>
+<p>The named <i class="arg">table</i> in the sqlite database identified by its
+object command <i class="arg">database</i> is used to hold the mapping.
+The table will be created if it does not exist.  If it exists its
+schema will be verified instead and an error thrown if the schema is
+not as expected.</p></dd>
+</dl>
+</div>
+<div id="section3" class="section"><h2><a name="section3">Standard API</a></h2>
+<p>As a derived class of <b class="package"><a href="path.html">path</a></b> instances of this class
+provide the following methods:</p>
+<dl class="definitions">
+<dt><a name="3"><b class="cmd">&lt;instance&gt;</b> <b class="method">id</b> <i class="arg">path</i></a></dt>
+<dd><p>This method adds the specified <i class="arg">path</i> to the instance, and returns
+its unique numeric identifier as the result of the method.</p>
+<p>Multiple calls of this method for the same path all return the
+same identifier.</p></dd>
+<dt><a name="4"><b class="cmd">&lt;instance&gt;</b> <b class="method">str</b> <i class="arg">id</i></a></dt>
+<dd><p>This method maps the specified numeric <i class="arg">id</i> back to its path, and
+returns that path as the result of the method.</p>
+<p>An error is thrown if the <i class="arg">id</i> is not known to the
+instance.</p></dd>
+<dt><a name="5"><b class="cmd">&lt;instance&gt;</b> <b class="method">names</b></a></dt>
+<dd><p>This method returns a list of all paths which have been interned into
+the instance.</p></dd>
+<dt><a name="6"><b class="cmd">&lt;instance&gt;</b> <b class="method">exists</b> <i class="arg">path</i></a></dt>
+<dd><p>This method tests if the specified <i class="arg">path</i> has been interned into
+the instance and returns a boolean flag as the result of the
+method.
+The result is <b class="const">true</b> if the path is known, and <b class="const">false</b>
+otherwise.</p></dd>
+<dt><a name="7"><b class="cmd">&lt;instance&gt;</b> <b class="method">exists-id</b> <i class="arg">id</i></a></dt>
+<dd><p>This method tests if the specified numeric <i class="arg">id</i> is known to the
+instance and returns a boolean flag as the result of the method.
+The result is <b class="const">true</b> if the id is known, and <b class="const">false</b>
+otherwise.</p></dd>
+<dt><a name="8"><b class="cmd">&lt;instance&gt;</b> <b class="method">size</b></a></dt>
+<dd><p>This method returns the number of interned paths known to the
+instance.</p></dd>
+<dt><a name="9"><b class="cmd">&lt;instance&gt;</b> <b class="method">map</b> <i class="arg">path</i> <i class="arg">id</i></a></dt>
+<dd><p>This method adds the specified <i class="arg">path</i> to the instance and forces
+an association with the specified numeric <i class="arg">id</i>.
+The result of the method is the empty string.</p>
+<p>An error will be thrown however if the <i class="arg">id</i> is already used
+for a different path.</p></dd>
+<dt><a name="10"><b class="cmd">&lt;instance&gt;</b> <b class="method">clear</b></a></dt>
+<dd><p>This method drops all path/id mappings from the instance.
+After this method has run the instance is empty.
+The result of this method is the empty string.</p></dd>
+<dt><a name="11"><b class="cmd">&lt;instance&gt;</b> <b class="method">serialize</b></a></dt>
+<dd></dd>
+<dt><a name="12"><b class="cmd">&lt;instance&gt;</b> <b class="method">--&gt;</b></a></dt>
+<dd><p>This method serializes the content of the instance, i.e. the
+path-to-id map and returns it as the result of the method.</p>
+<p>The result is a Tcl dictionary with the paths as keys and the
+associated identifiers as the values. Note, order is important, parent
+paths are listed before their children.</p></dd>
+<dt><a name="13"><b class="cmd">&lt;instance&gt;</b> <b class="method">deserialize</b> <i class="arg">serialization</i></a></dt>
+<dd></dd>
+<dt><a name="14"><b class="cmd">&lt;instance&gt;</b> <b class="method">&lt;--</b> <i class="arg">serialization</i></a></dt>
+<dd><p>This method takes a <i class="arg">serialization</i> as generated by method
+<b class="method">serialize</b> and adds it to the instance.
+It uses the method <b class="method">map</b> for this, to preserve the exact
+path/id mapping found in the input. On the flip-side this means that
+existing mappings may interfere and cause an error to be thrown. Note,
+order is important, parent paths have to be listed before their
+children for the forced mapping to work.</p>
+<p>If the previous content is not relevant, use method <b class="method">load</b>
+instead.
+If the exact mapping is not relevant, use method <b class="method">merge</b>
+instead.</p>
+<p>The result of the method is the empty string.</p></dd>
+<dt><a name="15"><b class="cmd">&lt;instance&gt;</b> <b class="method">load</b> <i class="arg">serialization</i></a></dt>
+<dd></dd>
+<dt><a name="16"><b class="cmd">&lt;instance&gt;</b> <b class="method">:=</b> <i class="arg">serialization</i></a></dt>
+<dd><p>This method takes a <i class="arg">serialization</i> as generated by method
+<b class="method">serialize</b> and uses it to replace previous content of the
+instance.</p>
+<p>The result of the method is the empty string.</p></dd>
+<dt><a name="17"><b class="cmd">&lt;instance&gt;</b> <b class="method">merge</b> <i class="arg">serialization</i></a></dt>
+<dd></dd>
+<dt><a name="18"><b class="cmd">&lt;instance&gt;</b> <b class="method">+=</b> <i class="arg">serialization</i></a></dt>
+<dd><p>This method takes a <i class="arg">serialization</i> as generated by method
+<b class="method">serialize</b> and adds the paths it contains to the instance.
+The ids found in the <i class="arg">serialization</i> are ignored and do not
+transfer.</p>
+<p>The result of the method is the empty string.</p></dd>
+</dl>
+</div>
+<div id="section4" class="section"><h2><a name="section4">Bugs, Ideas, Feedback</a></h2>
+<p>Both the package(s) and this documentation will undoubtedly contain
+bugs and other problems.
+Please report such at
+<a href="https:/core.tcl.tk/akupries/path">Path Tickets</a>.</p>
+<p>Please also report any ideas you may have for enhancements of
+either package(s) and/or documentation.</p>
+</div>
+<div id="keywords" class="section"><h2><a name="keywords">Keywords</a></h2>
+<p><a href="../../index.html#key4">deduplication</a>, <a href="../../index.html#key10">hierarchical</a>, <a href="../../index.html#key8">interning</a>, <a href="../../index.html#key2">list(string) deduplication</a>, <a href="../../index.html#key7">list(string) interning</a>, <a href="../../index.html#key1">list(string) storage</a>, <a href="../../index.html#key6">path deduplication</a>, <a href="../../index.html#key9">path interning</a>, <a href="../../index.html#key5">path storage</a>, <a href="../../index.html#key3">storage</a>, <a href="../../index.html#key0">tree</a></p>
+</div>
+<div id="copyright" class="section"><h2><a name="copyright">Copyright</a></h2>
+<p>Copyright &copy; 2017 Andreas Kupries<br>
+Copyright &copy; 2017 Documentation, Andreas Kupries</p>
+</div>
+</div></body></html>

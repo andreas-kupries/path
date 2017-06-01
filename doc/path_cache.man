@@ -1,0 +1,53 @@
+[comment {-*- tcl -*- doctools manpage}]
+[include parts/definitions.inc]
+[vset VERSION 1]
+[manpage_begin [vset LABEL_CACHE] [vset MAN_SECTION] [vset VERSION]]
+[include parts/module.inc]
+[require Tclx]
+[require path::cache]
+[require path::memory]
+[titledesc [vset TITLE_CACHE]]
+[description]
+[include parts/welcome.inc]
+
+This package provides an in-memory cache which can be placed in front
+of any other string storage following the [package path] API.
+
+The main use of such a caches is speeding up storage systems where
+reading is an expensive, i.e. slow operation.
+
+[para] Note that I did not mentiond [package path::sqlite]. Sqlite
+uses its own caching, and the package uses indices also, making it
+generally fast enough to not require caching.
+
+[para] Note a limitation of this cache: It grows without bounds. This
+may be a problem for long-running processes.
+
+[section {Class API}]
+
+[list_begin definitions]
+[comment {- - -- --- ----- -------- -------------}]
+[call [cmd ::path::cache] [method create] [arg obj] [arg backend]]
+
+This constructor command creates a new instance [arg obj]
+of the class and returns the fully qualified name of that
+instance.
+
+[para] The [arg backend] is the instance command of the actual string
+storage the new cache is responsible for.
+
+[comment {- - -- --- ----- -------- -------------}]
+[call [cmd ::path::cache] [method new] [arg backend]]
+
+This constructor command creates a new instance of the class and
+returns the fully qualified name of that instance.
+
+[para] The [arg backend] is the instance command of the actual string
+storage the new cache is responsible for.
+
+[list_end]
+
+[include parts/api.inc]
+
+[include parts/feedback.inc]
+[manpage_end]

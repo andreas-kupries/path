@@ -1,0 +1,31 @@
+# -*- tcl -*- tcl.tk//DSL tcltest//EN//2.0 tcl.tk//DSL tcltest//EN//2.0
+## (c) 2017 Andreas Kupries
+# # ## ### ##### ######## ############# #####################
+## Tests for the path::sqlite package, in-memory store.
+
+kt check Tcl     8.5
+kt check tcltest 2
+
+kt require support TclOO
+kt require support sqlite3
+kt require support dbutil
+kt require support atom::sqlite
+
+kt local   support path
+kt local   testing path::sqlite
+
+# # ## ### ##### ######## ############# #####################
+
+proc test-class {} { return path::sqlite/memory }
+
+# # ## ### ##### ######## ############# #####################
+
+kt source support/common.tcl
+kt source support/id-sequence-sqlite.tcl
+kt source support/setup-sqlite-memory.tcl
+
+kt source parts/sqlite.testsuite
+kt source parts/base.testsuite
+
+# # ## ### ##### ######## ############# #####################
+cleanupTests
