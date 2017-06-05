@@ -281,13 +281,27 @@ package require \fBpath::memory \fR
 .sp
 \fB::path::memory\fR \fBnew\fR \fIastore\fR
 .sp
+\fB<instance>\fR \fBatom-store\fR
+.sp
 \fB<instance>\fR \fBid\fR \fIpath\fR
 .sp
-\fB<instance>\fR \fBstr\fR \fIid\fR
+\fB<instance>\fR \fBid*\fR \fIword\fR\&.\&.\&.
+.sp
+\fB<instance>\fR \fBid-from\fR \fIbase\fR \fIpath\fR
+.sp
+\fB<instance>\fR \fBid-from*\fR \fIbase\fR \fIword\fR\&.\&.\&.
+.sp
+\fB<instance>\fR \fBpath\fR \fIid\fR
 .sp
 \fB<instance>\fR \fBnames\fR
 .sp
 \fB<instance>\fR \fBexists\fR \fIpath\fR
+.sp
+\fB<instance>\fR \fBexists*\fR \fIword\fR\&.\&.\&.
+.sp
+\fB<instance>\fR \fBexists-from\fR \fIbase\fR \fIpath\fR
+.sp
+\fB<instance>\fR \fBexists-from*\fR \fIbase\fR \fIword\fR\&.\&.\&.
 .sp
 \fB<instance>\fR \fBexists-id\fR \fIid\fR
 .sp
@@ -342,14 +356,33 @@ access a storage for atoms\&.
 As a derived class of \fBpath\fR instances of this class
 provide the following methods:
 .TP
-\fB<instance>\fR \fBid\fR \fIpath\fR
-This method adds the specified \fIpath\fR to the instance, and returns
-its unique numeric identifier as the result of the method\&.
-.sp
-Multiple calls of this method for the same path all return the
-same identifier\&.
+\fB<instance>\fR \fBatom-store\fR
+This method returns the fully-qualified command name of the Atom store
+used to intern path elements\&.
 .TP
-\fB<instance>\fR \fBstr\fR \fIid\fR
+\fB<instance>\fR \fBid\fR \fIpath\fR
+.TP
+\fB<instance>\fR \fBid*\fR \fIword\fR\&.\&.\&.
+.TP
+\fB<instance>\fR \fBid-from\fR \fIbase\fR \fIpath\fR
+.TP
+\fB<instance>\fR \fBid-from*\fR \fIbase\fR \fIword\fR\&.\&.\&.
+These methods add the specified \fIpath\fR to the instance, and then
+return its unique numeric identifier as their result\&.
+.sp
+Multiple calls for the same path all return the same
+identifier\&.
+.sp
+The methods whose name ends in \fI*\fR take the elements of
+the path to enter as separate word\&. The other methods take the
+elements as a list in a single argument\&.
+.sp
+The methods using \fIfrom\fR in their take an additional
+argument, the identifer of a known path and then enter the new path
+relative to this \fIbase\fR\&. An error is thrown if \fIbase\fR is not
+known\&.
+.TP
+\fB<instance>\fR \fBpath\fR \fIid\fR
 This method maps the specified numeric \fIid\fR back to its path, and
 returns that path as the result of the method\&.
 .sp
@@ -361,11 +394,22 @@ This method returns a list of all paths which have been interned into
 the instance\&.
 .TP
 \fB<instance>\fR \fBexists\fR \fIpath\fR
+.TP
+\fB<instance>\fR \fBexists*\fR \fIword\fR\&.\&.\&.
+.TP
+\fB<instance>\fR \fBexists-from\fR \fIbase\fR \fIpath\fR
+.TP
+\fB<instance>\fR \fBexists-from*\fR \fIbase\fR \fIword\fR\&.\&.\&.
 This method tests if the specified \fIpath\fR has been interned into
 the instance and returns a boolean flag as the result of the
 method\&.
 The result is \fBtrue\fR if the path is known, and \fBfalse\fR
 otherwise\&.
+.sp
+The variants regarding \fI*\fR and \fIfrom\fR are the
+same as for method \fBid\fR\&. I\&.e\&. \fI*\fR takes the path to
+check as separate argument words, and \fIfrom\fR checks relative to
+a known \fIbase\fR path, specified by its numeric identifier\&.
 .TP
 \fB<instance>\fR \fBexists-id\fR \fIid\fR
 This method tests if the specified numeric \fIid\fR is known to the
@@ -383,7 +427,8 @@ an association with the specified numeric \fIid\fR\&.
 The result of the method is the empty string\&.
 .sp
 An error will be thrown however if the \fIid\fR is already used
-for a different path\&.
+for a different path, or if \fIpath\fR is already known under a
+different \fIid\fR\&.
 .TP
 \fB<instance>\fR \fBclear\fR
 This method drops all path/id mappings from the instance\&.

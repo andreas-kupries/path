@@ -130,22 +130,29 @@
 <ul class="syntax">
 <li><a href="#1"><b class="cmd">::path::sqlite</b> <b class="method">create</b> <i class="arg">obj</i> <i class="arg">db</i> <i class="arg">table</i></a></li>
 <li><a href="#2"><b class="cmd">::path::sqlite</b> <b class="method">new</b> <i class="arg">db</i> <i class="arg">table</i></a></li>
-<li><a href="#3"><b class="cmd">&lt;instance&gt;</b> <b class="method">id</b> <i class="arg">path</i></a></li>
-<li><a href="#4"><b class="cmd">&lt;instance&gt;</b> <b class="method">str</b> <i class="arg">id</i></a></li>
-<li><a href="#5"><b class="cmd">&lt;instance&gt;</b> <b class="method">names</b></a></li>
-<li><a href="#6"><b class="cmd">&lt;instance&gt;</b> <b class="method">exists</b> <i class="arg">path</i></a></li>
-<li><a href="#7"><b class="cmd">&lt;instance&gt;</b> <b class="method">exists-id</b> <i class="arg">id</i></a></li>
-<li><a href="#8"><b class="cmd">&lt;instance&gt;</b> <b class="method">size</b></a></li>
-<li><a href="#9"><b class="cmd">&lt;instance&gt;</b> <b class="method">map</b> <i class="arg">path</i> <i class="arg">id</i></a></li>
-<li><a href="#10"><b class="cmd">&lt;instance&gt;</b> <b class="method">clear</b></a></li>
-<li><a href="#11"><b class="cmd">&lt;instance&gt;</b> <b class="method">serialize</b></a></li>
-<li><a href="#12"><b class="cmd">&lt;instance&gt;</b> <b class="method">--&gt;</b></a></li>
-<li><a href="#13"><b class="cmd">&lt;instance&gt;</b> <b class="method">deserialize</b> <i class="arg">serialization</i></a></li>
-<li><a href="#14"><b class="cmd">&lt;instance&gt;</b> <b class="method">&lt;--</b> <i class="arg">serialization</i></a></li>
-<li><a href="#15"><b class="cmd">&lt;instance&gt;</b> <b class="method">load</b> <i class="arg">serialization</i></a></li>
-<li><a href="#16"><b class="cmd">&lt;instance&gt;</b> <b class="method">:=</b> <i class="arg">serialization</i></a></li>
-<li><a href="#17"><b class="cmd">&lt;instance&gt;</b> <b class="method">merge</b> <i class="arg">serialization</i></a></li>
-<li><a href="#18"><b class="cmd">&lt;instance&gt;</b> <b class="method">+=</b> <i class="arg">serialization</i></a></li>
+<li><a href="#3"><b class="cmd">&lt;instance&gt;</b> <b class="method">atom-store</b></a></li>
+<li><a href="#4"><b class="cmd">&lt;instance&gt;</b> <b class="method">id</b> <i class="arg">path</i></a></li>
+<li><a href="#5"><b class="cmd">&lt;instance&gt;</b> <b class="method">id*</b> <i class="arg">word</i>...</a></li>
+<li><a href="#6"><b class="cmd">&lt;instance&gt;</b> <b class="method">id-from</b> <i class="arg">base</i> <i class="arg">path</i></a></li>
+<li><a href="#7"><b class="cmd">&lt;instance&gt;</b> <b class="method">id-from*</b> <i class="arg">base</i> <i class="arg">word</i>...</a></li>
+<li><a href="#8"><b class="cmd">&lt;instance&gt;</b> <b class="method">path</b> <i class="arg">id</i></a></li>
+<li><a href="#9"><b class="cmd">&lt;instance&gt;</b> <b class="method">names</b></a></li>
+<li><a href="#10"><b class="cmd">&lt;instance&gt;</b> <b class="method">exists</b> <i class="arg">path</i></a></li>
+<li><a href="#11"><b class="cmd">&lt;instance&gt;</b> <b class="method">exists*</b> <i class="arg">word</i>...</a></li>
+<li><a href="#12"><b class="cmd">&lt;instance&gt;</b> <b class="method">exists-from</b> <i class="arg">base</i> <i class="arg">path</i></a></li>
+<li><a href="#13"><b class="cmd">&lt;instance&gt;</b> <b class="method">exists-from*</b> <i class="arg">base</i> <i class="arg">word</i>...</a></li>
+<li><a href="#14"><b class="cmd">&lt;instance&gt;</b> <b class="method">exists-id</b> <i class="arg">id</i></a></li>
+<li><a href="#15"><b class="cmd">&lt;instance&gt;</b> <b class="method">size</b></a></li>
+<li><a href="#16"><b class="cmd">&lt;instance&gt;</b> <b class="method">map</b> <i class="arg">path</i> <i class="arg">id</i></a></li>
+<li><a href="#17"><b class="cmd">&lt;instance&gt;</b> <b class="method">clear</b></a></li>
+<li><a href="#18"><b class="cmd">&lt;instance&gt;</b> <b class="method">serialize</b></a></li>
+<li><a href="#19"><b class="cmd">&lt;instance&gt;</b> <b class="method">--&gt;</b></a></li>
+<li><a href="#20"><b class="cmd">&lt;instance&gt;</b> <b class="method">deserialize</b> <i class="arg">serialization</i></a></li>
+<li><a href="#21"><b class="cmd">&lt;instance&gt;</b> <b class="method">&lt;--</b> <i class="arg">serialization</i></a></li>
+<li><a href="#22"><b class="cmd">&lt;instance&gt;</b> <b class="method">load</b> <i class="arg">serialization</i></a></li>
+<li><a href="#23"><b class="cmd">&lt;instance&gt;</b> <b class="method">:=</b> <i class="arg">serialization</i></a></li>
+<li><a href="#24"><b class="cmd">&lt;instance&gt;</b> <b class="method">merge</b> <i class="arg">serialization</i></a></li>
+<li><a href="#25"><b class="cmd">&lt;instance&gt;</b> <b class="method">+=</b> <i class="arg">serialization</i></a></li>
 </ul>
 </div>
 </div>
@@ -183,54 +190,81 @@ not as expected.</p></dd>
 <p>As a derived class of <b class="package"><a href="path.html">path</a></b> instances of this class
 provide the following methods:</p>
 <dl class="definitions">
-<dt><a name="3"><b class="cmd">&lt;instance&gt;</b> <b class="method">id</b> <i class="arg">path</i></a></dt>
-<dd><p>This method adds the specified <i class="arg">path</i> to the instance, and returns
-its unique numeric identifier as the result of the method.</p>
-<p>Multiple calls of this method for the same path all return the
-same identifier.</p></dd>
-<dt><a name="4"><b class="cmd">&lt;instance&gt;</b> <b class="method">str</b> <i class="arg">id</i></a></dt>
+<dt><a name="3"><b class="cmd">&lt;instance&gt;</b> <b class="method">atom-store</b></a></dt>
+<dd><p>This method returns the fully-qualified command name of the Atom store
+used to intern path elements.</p></dd>
+<dt><a name="4"><b class="cmd">&lt;instance&gt;</b> <b class="method">id</b> <i class="arg">path</i></a></dt>
+<dd></dd>
+<dt><a name="5"><b class="cmd">&lt;instance&gt;</b> <b class="method">id*</b> <i class="arg">word</i>...</a></dt>
+<dd></dd>
+<dt><a name="6"><b class="cmd">&lt;instance&gt;</b> <b class="method">id-from</b> <i class="arg">base</i> <i class="arg">path</i></a></dt>
+<dd></dd>
+<dt><a name="7"><b class="cmd">&lt;instance&gt;</b> <b class="method">id-from*</b> <i class="arg">base</i> <i class="arg">word</i>...</a></dt>
+<dd><p>These methods add the specified <i class="arg">path</i> to the instance, and then
+return its unique numeric identifier as their result.</p>
+<p>Multiple calls for the same path all return the same
+identifier.</p>
+<p>The methods whose name ends in <em>*</em> take the elements of
+the path to enter as separate word. The other methods take the
+elements as a list in a single argument.</p>
+<p>The methods using <em>from</em> in their take an additional
+argument, the identifer of a known path and then enter the new path
+relative to this <i class="arg">base</i>. An error is thrown if <i class="arg">base</i> is not
+known.</p></dd>
+<dt><a name="8"><b class="cmd">&lt;instance&gt;</b> <b class="method">path</b> <i class="arg">id</i></a></dt>
 <dd><p>This method maps the specified numeric <i class="arg">id</i> back to its path, and
 returns that path as the result of the method.</p>
 <p>An error is thrown if the <i class="arg">id</i> is not known to the
 instance.</p></dd>
-<dt><a name="5"><b class="cmd">&lt;instance&gt;</b> <b class="method">names</b></a></dt>
+<dt><a name="9"><b class="cmd">&lt;instance&gt;</b> <b class="method">names</b></a></dt>
 <dd><p>This method returns a list of all paths which have been interned into
 the instance.</p></dd>
-<dt><a name="6"><b class="cmd">&lt;instance&gt;</b> <b class="method">exists</b> <i class="arg">path</i></a></dt>
+<dt><a name="10"><b class="cmd">&lt;instance&gt;</b> <b class="method">exists</b> <i class="arg">path</i></a></dt>
+<dd></dd>
+<dt><a name="11"><b class="cmd">&lt;instance&gt;</b> <b class="method">exists*</b> <i class="arg">word</i>...</a></dt>
+<dd></dd>
+<dt><a name="12"><b class="cmd">&lt;instance&gt;</b> <b class="method">exists-from</b> <i class="arg">base</i> <i class="arg">path</i></a></dt>
+<dd></dd>
+<dt><a name="13"><b class="cmd">&lt;instance&gt;</b> <b class="method">exists-from*</b> <i class="arg">base</i> <i class="arg">word</i>...</a></dt>
 <dd><p>This method tests if the specified <i class="arg">path</i> has been interned into
 the instance and returns a boolean flag as the result of the
 method.
 The result is <b class="const">true</b> if the path is known, and <b class="const">false</b>
-otherwise.</p></dd>
-<dt><a name="7"><b class="cmd">&lt;instance&gt;</b> <b class="method">exists-id</b> <i class="arg">id</i></a></dt>
+otherwise.</p>
+<p>The variants regarding <em>*</em> and <em>from</em> are the
+same as for method <b class="method">id</b>. I.e. <em>*</em> takes the path to
+check as separate argument words, and <em>from</em> checks relative to
+a known <i class="arg">base</i> path, specified by its numeric identifier.</p></dd>
+<dt><a name="14"><b class="cmd">&lt;instance&gt;</b> <b class="method">exists-id</b> <i class="arg">id</i></a></dt>
 <dd><p>This method tests if the specified numeric <i class="arg">id</i> is known to the
 instance and returns a boolean flag as the result of the method.
 The result is <b class="const">true</b> if the id is known, and <b class="const">false</b>
 otherwise.</p></dd>
-<dt><a name="8"><b class="cmd">&lt;instance&gt;</b> <b class="method">size</b></a></dt>
+<dt><a name="15"><b class="cmd">&lt;instance&gt;</b> <b class="method">size</b></a></dt>
 <dd><p>This method returns the number of interned paths known to the
 instance.</p></dd>
-<dt><a name="9"><b class="cmd">&lt;instance&gt;</b> <b class="method">map</b> <i class="arg">path</i> <i class="arg">id</i></a></dt>
+<dt><a name="16"><b class="cmd">&lt;instance&gt;</b> <b class="method">map</b> <i class="arg">path</i> <i class="arg">id</i></a></dt>
 <dd><p>This method adds the specified <i class="arg">path</i> to the instance and forces
 an association with the specified numeric <i class="arg">id</i>.
 The result of the method is the empty string.</p>
 <p>An error will be thrown however if the <i class="arg">id</i> is already used
-for a different path.</p></dd>
-<dt><a name="10"><b class="cmd">&lt;instance&gt;</b> <b class="method">clear</b></a></dt>
+for a different path, or if <i class="arg">path</i> is already known under a
+different <i class="arg">id</i>.</p></dd>
+<dt><a name="17"><b class="cmd">&lt;instance&gt;</b> <b class="method">clear</b></a></dt>
 <dd><p>This method drops all path/id mappings from the instance.
 After this method has run the instance is empty.
 The result of this method is the empty string.</p></dd>
-<dt><a name="11"><b class="cmd">&lt;instance&gt;</b> <b class="method">serialize</b></a></dt>
+<dt><a name="18"><b class="cmd">&lt;instance&gt;</b> <b class="method">serialize</b></a></dt>
 <dd></dd>
-<dt><a name="12"><b class="cmd">&lt;instance&gt;</b> <b class="method">--&gt;</b></a></dt>
+<dt><a name="19"><b class="cmd">&lt;instance&gt;</b> <b class="method">--&gt;</b></a></dt>
 <dd><p>This method serializes the content of the instance, i.e. the
 path-to-id map and returns it as the result of the method.</p>
 <p>The result is a Tcl dictionary with the paths as keys and the
 associated identifiers as the values. Note, order is important, parent
 paths are listed before their children.</p></dd>
-<dt><a name="13"><b class="cmd">&lt;instance&gt;</b> <b class="method">deserialize</b> <i class="arg">serialization</i></a></dt>
+<dt><a name="20"><b class="cmd">&lt;instance&gt;</b> <b class="method">deserialize</b> <i class="arg">serialization</i></a></dt>
 <dd></dd>
-<dt><a name="14"><b class="cmd">&lt;instance&gt;</b> <b class="method">&lt;--</b> <i class="arg">serialization</i></a></dt>
+<dt><a name="21"><b class="cmd">&lt;instance&gt;</b> <b class="method">&lt;--</b> <i class="arg">serialization</i></a></dt>
 <dd><p>This method takes a <i class="arg">serialization</i> as generated by method
 <b class="method">serialize</b> and adds it to the instance.
 It uses the method <b class="method">map</b> for this, to preserve the exact
@@ -243,16 +277,16 @@ instead.
 If the exact mapping is not relevant, use method <b class="method">merge</b>
 instead.</p>
 <p>The result of the method is the empty string.</p></dd>
-<dt><a name="15"><b class="cmd">&lt;instance&gt;</b> <b class="method">load</b> <i class="arg">serialization</i></a></dt>
+<dt><a name="22"><b class="cmd">&lt;instance&gt;</b> <b class="method">load</b> <i class="arg">serialization</i></a></dt>
 <dd></dd>
-<dt><a name="16"><b class="cmd">&lt;instance&gt;</b> <b class="method">:=</b> <i class="arg">serialization</i></a></dt>
+<dt><a name="23"><b class="cmd">&lt;instance&gt;</b> <b class="method">:=</b> <i class="arg">serialization</i></a></dt>
 <dd><p>This method takes a <i class="arg">serialization</i> as generated by method
 <b class="method">serialize</b> and uses it to replace previous content of the
 instance.</p>
 <p>The result of the method is the empty string.</p></dd>
-<dt><a name="17"><b class="cmd">&lt;instance&gt;</b> <b class="method">merge</b> <i class="arg">serialization</i></a></dt>
+<dt><a name="24"><b class="cmd">&lt;instance&gt;</b> <b class="method">merge</b> <i class="arg">serialization</i></a></dt>
 <dd></dd>
-<dt><a name="18"><b class="cmd">&lt;instance&gt;</b> <b class="method">+=</b> <i class="arg">serialization</i></a></dt>
+<dt><a name="25"><b class="cmd">&lt;instance&gt;</b> <b class="method">+=</b> <i class="arg">serialization</i></a></dt>
 <dd><p>This method takes a <i class="arg">serialization</i> as generated by method
 <b class="method">serialize</b> and adds the paths it contains to the instance.
 The ids found in the <i class="arg">serialization</i> are ignored and do not

@@ -6,16 +6,34 @@ provide the following methods:
 
 [list_begin definitions]
 [comment {- - -- --- ----- -------- -------------}]
-[call [cmd <instance>] [method id] [arg path]]
+[call [cmd <instance>] [method atom-store]]
 
-This method adds the specified [arg path] to the instance, and returns
-its unique numeric identifier as the result of the method.
-
-[para] Multiple calls of this method for the same path all return the
-same identifier.
+This method returns the fully-qualified command name of the Atom store
+used to intern path elements.
 
 [comment {- - -- --- ----- -------- -------------}]
-[call [cmd <instance>] [method str] [arg id]]
+[call [cmd <instance>] [method id] [arg path]]
+[call [cmd <instance>] [method id*] [arg word]...]
+[call [cmd <instance>] [method id-from] [arg base] [arg path]]
+[call [cmd <instance>] [method id-from*] [arg base] [arg word]...]
+
+These methods add the specified [arg path] to the instance, and then
+return its unique numeric identifier as their result.
+
+[para] Multiple calls for the same path all return the same
+identifier.
+
+[para] The methods whose name ends in [strong *] take the elements of
+the path to enter as separate word. The other methods take the
+elements as a list in a single argument.
+
+[para] The methods using [strong from] in their take an additional
+argument, the identifer of a known path and then enter the new path
+relative to this [arg base]. An error is thrown if [arg base] is not
+known.
+
+[comment {- - -- --- ----- -------- -------------}]
+[call [cmd <instance>] [method path] [arg id]]
 
 This method maps the specified numeric [arg id] back to its path, and
 returns that path as the result of the method.
@@ -31,6 +49,9 @@ the instance.
 
 [comment {- - -- --- ----- -------- -------------}]
 [call [cmd <instance>] [method exists] [arg path]]
+[call [cmd <instance>] [method exists*] [arg word]...]
+[call [cmd <instance>] [method exists-from] [arg base] [arg path]]
+[call [cmd <instance>] [method exists-from*] [arg base] [arg word]...]
 
 This method tests if the specified [arg path] has been interned into
 the instance and returns a boolean flag as the result of the
@@ -38,6 +59,11 @@ method.
 
 The result is [const true] if the path is known, and [const false]
 otherwise.
+
+[para] The variants regarding [strong *] and [strong from] are the
+same as for method [method id]. I.e. [strong *] takes the path to
+check as separate argument words, and [strong from] checks relative to
+a known [arg base] path, specified by its numeric identifier.
 
 [comment {- - -- --- ----- -------- -------------}]
 [call [cmd <instance>] [method exists-id] [arg id]]
@@ -63,7 +89,8 @@ an association with the specified numeric [arg id].
 The result of the method is the empty string.
 
 [para] An error will be thrown however if the [arg id] is already used
-for a different path.
+for a different path, or if [arg path] is already known under a
+different [arg id].
 
 [comment {- - -- --- ----- -------- -------------}]
 [call [cmd <instance>] [method clear]]
